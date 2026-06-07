@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منصة أسئلة عمليات التدريب</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
+:root{
+  --green1:#064e3b;--green2:#047857;--green3:#10b981;--green4:#a7f3d0;
+  --mint:#ecfdf5;--soft:#f0fdf4;--white:#fff;--text:#12352b;
+  --red:#dc2626;--redbg:#fee2e2;--gold:#b7791f;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Tajawal',Arial,sans-serif;background:
+radial-gradient(circle at top left,#d1fae5,transparent 30%),
+linear-gradient(135deg,#ecfdf5,#f7fff9,#dff7ec);color:var(--text);min-height:100vh}
+.hero{max-width:1180px;margin:24px auto 0;padding:28px;border-radius:30px;
+background:linear-gradient(135deg,var(--green1),var(--green2),var(--green3));color:white;
+box-shadow:0 18px 50px rgba(6,78,59,.25);position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.12);left:-80px;top:-90px}
+.hero h1{margin:0;font-size:34px;font-weight:900}
+.hero p{margin:10px 0 0;font-size:18px;line-height:1.8;opacity:.95}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:8px 14px;border-radius:99px;font-weight:800}
+.wrap{max-width:1180px;margin:auto;padding:22px;display:grid;grid-template-columns:330px 1fr;gap:20px;align-items:start}
+.side,.main-card{background:rgba(255,255,255,.88);backdrop-filter:blur(8px);border:1px solid #cceedd;
+box-shadow:0 14px 35px rgba(18,53,43,.10);border-radius:26px}
+.side{padding:18px;position:sticky;top:14px}
+.side h2{margin:0 0 12px;color:var(--green1)}
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--soft);border-radius:18px;padding:14px;text-align:center;border:1px solid #d1fae5}
+.stat b{display:block;font-size:27px;color:var(--green2)}
+.progress{height:14px;background:#d1fae5;border-radius:20px;overflow:hidden;margin:14px 0}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--green2),var(--green3));transition:.35s}
+.sectionBtn{width:100%;text-align:right;margin:8px 0;background:#ffffff;border:1px solid #cfeede;color:var(--green1);
+border-radius:16px;padding:12px;cursor:pointer;font-family:inherit;font-weight:800;transition:.2s}
+.sectionBtn:hover,.sectionBtn.active{background:#d1fae5;transform:translateY(-1px)}
+.sectionBtn small{display:block;color:#35745d;font-weight:700;margin-top:4px}
+button{font-family:inherit;border:0;border-radius:16px;padding:12px 18px;font-weight:900;cursor:pointer;transition:.2s}
+.primary{background:var(--green2);color:white} .primary:hover{background:var(--green1)}
+.ghost{background:#e8fff2;color:var(--green1);border:1px solid #b8eccc}
+.main-card{padding:22px;min-height:520px}
+.topline{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.tag{background:#dcfce7;color:#166534;padding:7px 12px;border-radius:99px;font-weight:800}
+.question{font-size:24px;line-height:1.8;font-weight:900;margin:18px 0;color:#0f3d30}
+.options{display:grid;gap:12px}
+.option{text-align:right;background:#fff;border:2px solid #d7f3e2;border-radius:18px;padding:15px;font-size:17px;color:#12352b;position:relative}
+.option:hover{border-color:var(--green3);transform:translateY(-1px)}
+.option.correct{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.option.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+.light{display:inline-flex;width:16px;height:16px;border-radius:50%;margin-left:8px;background:#d1d5db;vertical-align:middle;box-shadow:0 0 0 transparent}
+.correct .light{background:#22c55e;box-shadow:0 0 18px #22c55e}
+.wrong .light{background:#ef4444;box-shadow:0 0 18px #ef4444}
+.feedback{margin-top:16px;border-radius:18px;padding:16px;background:#f0fdf4;border-right:6px solid var(--green2);font-weight:800;display:none;line-height:1.9}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.result{text-align:center;padding:28px}
+.result h2{font-size:34px;color:var(--green1)}
+.result .score{font-size:54px;font-weight:900;color:var(--green2);margin:10px 0}
+.message{font-size:24px;font-weight:900;padding:15px;border-radius:20px;background:#ecfdf5;display:inline-block}
+.footer{max-width:1180px;margin:0 auto 25px;text-align:center;color:#0f513f;font-weight:900;padding:12px}
+@media(max-width:850px){.wrap{grid-template-columns:1fr}.side{position:static}.hero h1{font-size:27px}.question{font-size:20px}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>منصة أسئلة عمليات التدريب والنماذج العالمية</h1>
+  <p>منصة تفاعلية مقسمة إلى أقسام، تحتوي على أسئلة اختيار من متعدد، وتصحيح فوري بضوء أخضر للإجابة الصحيحة وضوء أحمر للإجابة الخاطئة مع تغذية راجعة.</p>
+  <div class="badges">
+    <span class="badge">عدد الأسئلة: <b id="totalTop">24</b></span>
+    <span class="badge">الأقسام: 2</span>
+    <span class="badge">ألوان خضراء هادئة</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <aside class="side">
+    <h2>لوحة التقدم</h2>
+    <div class="statgrid">
+      <div class="stat"><b id="answered">0</b><span>مجابة</span></div>
+      <div class="stat"><b id="correct">0</b><span>صحيحة</span></div>
+      <div class="stat"><b id="wrong">0</b><span>خاطئة</span></div>
+      <div class="stat"><b id="percent">0%</b><span>النسبة</span></div>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <h2>الأقسام</h2>
+    <div id="sectionButtons"></div>
+    <div class="actions">
+      <button class="ghost" onclick="restart()">إعادة الاختبار</button>
+      <button class="primary" onclick="showResult()">إنهاء وعرض النتيجة</button>
+    </div>
+  </aside>
+
+  <main class="main-card" id="main"></main>
+</div>
+<div class="footer">تصميم المشرفة أسماء</div>
+
+<script>
+const questions = [{"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "لديك برنامج تدريبي لوزارة حكومية يتطلب رحلة كاملة تبدأ بتحليل الاحتياج وتنتهي بالتقويم. أي نموذج تختارين؟", "options": ["SAM", "ADDIE", "Kemp", "ASSURE"], "a": 1, "fb": "نموذج ADDIE هو النموذج الأشمل والأكثر نظامية؛ لأنه يبدأ بالتحليل ثم التصميم والتطوير والتنفيذ وينتهي بالتقويم."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "في مشروع لتطوير تطبيق إلكتروني داخلي، تحتاجين لتصميم تدريب يتطور بسرعة مع كل تحديث تقني عبر دورات تكرارية. أي نموذج هو الأكفأ؟", "options": ["ADDIE", "SAM", "Dick & Carey", "Gagne"], "a": 1, "fb": "SAM يعتمد على المنهجية الرشيقة والنماذج الأولية السريعة والتطوير التكراري لمواكبة التغيرات."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "تصميم برنامج تدريبي يتطلب ربط الأهداف، والأنشطة، والتقويم خطوة بخطوة وبمنطق فني دقيق. ما الأنسب؟", "options": ["Dick & Carey", "Kemp", "Merrill", "ASSURE"], "a": 0, "fb": "Dick & Carey نموذج نظامي يضبط العلاقة بين الهدف والمحتوى والاستراتيجية وأدوات التقويم."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "إدخال الواقع الافتراضي ضمن حقيبة تدريبية مع التأكد من فاعلية الوسيلة التقنية ومشاركة المتدربين. أي نموذج يناسب؟", "options": ["ADDIE", "SAM", "ASSURE", "Merrill"], "a": 2, "fb": "ASSURE صُمم خصيصًا لتوظيف الوسائل والتقنية مع تحليل المتدربين وطلب مشاركتهم وتقويم الوسيلة."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "مصممة تدريب تفضّل البدء بالتقويم قبل المحتوى وتتحرك بحرية بين عناصر التصميم دون تسلسل صارم. أي نموذج؟", "options": ["Kemp", "ADDIE", "Merrill", "Gagne"], "a": 0, "fb": "Kemp نموذج مرن ودائري يسمح بالبدء من أي عنصر وتعديله باستمرار."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "برنامج يركز على حل مشكلات العملاء، يبدأ بعرض حل ثم يطلب التطبيق في بيئة عمل حقيقية. أي نموذج؟", "options": ["Gagne", "Merrill", "ASSURE", "Dick & Carey"], "a": 1, "fb": "Merrill يركز على التعلم القائم على المهمة أو المشكلة الواقعية، ثم التطبيق والدمج في العمل."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "في أي مرحلة من ADDIE يتم تحديد خصائص المتدربين وخلفياتهم المعرفية والموارد المتاحة؟", "options": ["التصميم", "التحليل", "التطوير", "التنفيذ"], "a": 1, "fb": "مرحلة التحليل تجمع معلومات المتدربين والاحتياجات والموارد قبل بدء التصميم."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "إنتاج الأدلة، أوراق العمل، والعروض التدريبية المطبوعة أو الرقمية يتم في أي مرحلة؟", "options": ["التصميم", "التطوير", "التحليل", "التنفيذ"], "a": 1, "fb": "مرحلة التطوير هي تحويل خطط التصميم إلى مواد تدريبية فعلية قابلة للاستخدام."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "أول خطوة في نموذج جانييه لتسعة أحداث التعلم تهدف إلى تهيئة المتدرب وجذب انتباهه. ما هي؟", "options": ["إخبار المتدرب بالأهداف", "جذب الانتباه", "استدعاء التعلم السابق", "تقديم المادة"], "a": 1, "fb": "جذب الانتباه هو المدخل الأول لإثارة اهتمام المتدرب وتهيئته للتعلم."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "تعديل خطة التدريب أثناء التنفيذ بناءً على ملاحظات فورية لتحسين الأداء يسمى:", "options": ["تقويم ختامي", "تقويم تكويني", "تقويم بعدي", "تقويم أثر"], "a": 1, "fb": "التقويم التكويني يحدث أثناء التدريب ويستخدم للتحسين الفوري قبل الوصول للنهاية."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "في نموذج ASSURE، ماذا تعني خطوة Require Learner Participation؟", "options": ["إجبار المتدرب على الحضور", "طلب مشاركة المتدرب", "تقييم أداء المتدرب", "تسجيل أسماء المتدربين"], "a": 1, "fb": "النموذج يؤكد أن التعلم لا يكتمل دون تفاعل ومشاركة المتدرب مع الوسائل والنشاط."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "وضع المخطط العام Blueprint وتحديد الأهداف والأنشطة والاستراتيجيات وأدوات القياس يمثل أي مرحلة؟", "options": ["التحليل", "التصميم", "التطوير", "التقويم"], "a": 1, "fb": "التصميم يحدد الهيكل العام والأنشطة والاستراتيجيات قبل إنتاج المواد."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "نموذج تصميم يعتمد على التكرار بين التصميم والتطوير والمراجعة للوصول للمنتج النهائي بسرعة هو:", "options": ["ADDIE", "SAM", "Kemp", "Merrill"], "a": 1, "fb": "SAM يقوم على التقريب المتتابع والتكرار السريع حتى الوصول إلى صيغة مناسبة."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "أي نموذج يعطي أهمية كبيرة للدعم الفني وخدمات المساندة كعنصر حي في عملية التصميم؟", "options": ["ADDIE", "Kemp", "Dick & Carey", "ASSURE"], "a": 1, "fb": "Kemp ينظر للتصميم كمنظومة مرنة تتأثر بالدعم الفني وإدارة المشروع والخدمات المساندة."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "عند العمل على بروتوكول حساس لا يقبل الاجتهاد ويحتاج ضبطًا دقيقًا للمخرجات، ما الأنسب؟", "options": ["Dick & Carey", "SAM", "Merrill", "Kemp"], "a": 0, "fb": "Dick & Carey مناسب للتدريب الفني الدقيق الذي يحتاج ضبطًا وتسلسلًا واضحًا."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "في مبادئ Merrill، ماذا تعني مرحلة التنشيط Activation؟", "options": ["تشغيل القاعة", "استدعاء الخبرات السابقة", "القيام بتمرين رياضي", "توزيع الواجبات"], "a": 1, "fb": "التنشيط يعني ربط التعلم الجديد بما يعرفه المتدرب سابقًا."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "عند الحاجة إلى تقليل بطء نموذج ADDIE والانتقال إلى تصميم أسرع، ما النموذج البديل؟", "options": ["Dick & Carey", "SAM", "ASSURE", "Gagne"], "a": 1, "fb": "SAM أكثر رشاقة وسرعة، ويعالج بطء التسلسل الطويل في ADDIE."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "تهيئة بيئة التنفيذ، القاعة، المنصة، والمواد قبل إطلاق البرنامج تقع ضمن مرحلة:", "options": ["التطوير", "التنفيذ", "التحليل", "التصميم"], "a": 1, "fb": "التنفيذ يتضمن تجهيز البيئة التدريبية وإطلاق البرنامج وإدارة سيره."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "حرف E في نموذج ASSURE يشير إلى:", "options": ["التنفيذ", "التقويم والمراجعة", "الخبرة", "التفاعل"], "a": 1, "fb": "Evaluate and Revise تعني تقويم النتائج والوسائل ثم مراجعة التصميم للتحسين."}, {"section": "النماذج العالمية في تصميم البرامج التدريبية", "q": "إذا كان الهدف تغيير سلوك عملي عبر النمذجة ثم التطبيق ثم الدمج في الواقع، فالأنسب هو:", "options": ["ADDIE", "Merrill", "Kemp", "ASSURE"], "a": 1, "fb": "Merrill يتدرج من العرض والنمذجة إلى التطبيق ثم الدمج في واقع العمل."}, {"section": "تحديد الاحتياجات التدريبية", "q": "لاحظت الإدارة فجوة بين أداء الموظفين الحالي والأداء المأمول، فطلبت تحليل سبب الفجوة. أي مدرسة تحليل تناسب؟", "options": ["الكفاءات", "تحليل الأداء", "الحوادث الحرجة", "المستقبلية"], "a": 1, "fb": "تحليل الأداء يركز على الفجوة بين الأداء الحالي والمستوى المطلوب، وهل السبب تدريبي أم غير تدريبي."}, {"section": "تحديد الاحتياجات التدريبية", "q": "أرادت الإدارة مواءمة التدريب مع رؤية 2030 واستشراف الوظائف المستقبلية وتحولات سوق العمل. ما الأنسب؟", "options": ["تحليل الأداء", "المدرسة المستقبلية", "تحليل المهمة", "تحليل الكفاءة"], "a": 1, "fb": "المدرسة المستقبلية تركز على الاتجاهات الكبرى والتحولات التقنية والمهارات المطلوبة مستقبلًا."}, {"section": "تحديد الاحتياجات التدريبية", "q": "سؤال: ما السمات والمهارات التي تجعل الموظف يتفوق؟ يتبع أي مدخل؟", "options": ["تحليل الأداء", "الكفاءات", "الحوادث الحرجة", "المستويات الثلاثة"], "a": 1, "fb": "تحليل الكفاءات يحدد المعارف والمهارات والسمات KSA التي تميز الأداء العالي."}, {"section": "تحديد الاحتياجات التدريبية", "q": "تحليل الرؤية والأهداف والاستراتيجية والموارد قبل تصميم البرنامج التدريبي يمثل أي مستوى؟", "options": ["تحليل الفرد", "التحليل المنظمي", "تحليل المهمة", "تحليل العمل"], "a": 1, "fb": "التحليل المنظمي يبحث في اتجاهات المنظمة وأهدافها ومواردها ومدى دعمها للتدريب."}];
+let currentSection = "الكل";
+let currentIndex = 0;
+let answers = Array(questions.length).fill(null);
+
+function sections(){
+  const counts = {};
+  questions.forEach(q=>counts[q.section]=(counts[q.section]||0)+1);
+  return counts;
+}
+function filteredIndexes(){
+  return questions.map((q,i)=>({q,i})).filter(x=>currentSection==="الكل"||x.q.section===currentSection).map(x=>x.i);
+}
+function renderSections(){
+  const box=document.getElementById('sectionButtons'); box.innerHTML='';
+  const all=document.createElement('button');
+  all.className='sectionBtn active'; all.innerHTML=`الكل <small>${questions.length} سؤال</small>`;
+  all.onclick=()=>selectSection('الكل', all); box.appendChild(all);
+  Object.entries(sections()).forEach(([s,c])=>{
+    const b=document.createElement('button'); b.className='sectionBtn';
+    b.innerHTML=`${s} <small>${c} سؤال</small>`;
+    b.onclick=()=>selectSection(s,b); box.appendChild(b);
+  });
+}
+function selectSection(s,btn){
+  currentSection=s; currentIndex=0;
+  document.querySelectorAll('.sectionBtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuestion();
+}
+function renderQuestion(){
+  const ids=filteredIndexes();
+  if(currentIndex<0) currentIndex=0;
+  if(currentIndex>=ids.length) currentIndex=ids.length-1;
+  const qi=ids[currentIndex], q=questions[qi], saved=answers[qi];
+  const main=document.getElementById('main');
+  main.innerHTML = `
+    <div class="topline">
+      <span class="tag">${q.section}</span>
+      <span class="tag">السؤال ${currentIndex+1} من ${ids.length}</span>
+    </div>
+    <div class="question">${q.q}</div>
+    <div class="options">
+      ${q.options.map((o,i)=>`
+        <button class="option ${saved!==null ? (i===q.a?'correct':(i===saved?'wrong':'')) : ''}" onclick="answer(${qi},${i})" ${saved!==null?'disabled':''}>
+          <span class="light"></span>${o}
+        </button>`).join('')}
+    </div>
+    <div class="feedback" id="fb" style="display:${saved!==null?'block':'none'}">
+      ${saved!==null ? (saved===q.a?'إجابة صحيحة ✅ ':'إجابة غير صحيحة ❌ ') : ''}<br>${q.fb}
+    </div>
+    <div class="actions">
+      <button class="ghost" onclick="prevQ()">السابق</button>
+      <button class="primary" onclick="nextQ()">التالي</button>
+      <button class="ghost" onclick="showResult()">عرض النتيجة</button>
+    </div>`;
+  updateStats();
+}
+function answer(qi, choice){
+  if(answers[qi]!==null) return;
+  answers[qi]=choice;
+  renderQuestion();
+}
+function nextQ(){ const ids=filteredIndexes(); if(currentIndex<ids.length-1){currentIndex++; renderQuestion();} else showResult(); }
+function prevQ(){ if(currentIndex>0){currentIndex--; renderQuestion();} }
+function updateStats(){
+  const answered=answers.filter(x=>x!==null).length;
+  const correct=answers.reduce((n,a,i)=> n+(a===questions[i].a?1:0),0);
+  const wrong=answers.reduce((n,a,i)=> n+(a!==null && a!==questions[i].a?1:0),0);
+  const pct=questions.length?Math.round(correct/questions.length*100):0;
+  document.getElementById('answered').textContent=answered;
+  document.getElementById('correct').textContent=correct;
+  document.getElementById('wrong').textContent=wrong;
+  document.getElementById('percent').textContent=pct+'%';
+  document.getElementById('bar').style.width=(answered/questions.length*100)+'%';
+}
+function showResult(){
+  const correct=answers.reduce((n,a,i)=> n+(a===questions[i].a?1:0),0);
+  const wrong=answers.reduce((n,a,i)=> n+(a!==null && a!==questions[i].a?1:0),0);
+  const unanswered=answers.filter(x=>x===null).length;
+  const pct=Math.round(correct/questions.length*100);
+  let msg='';
+  if(pct>95) msg='مبدعة ومتميزة جدًا 🌟 أداء رائع يستحق التحفيز';
+  else if(pct<60) msg='تحتاج تطوير ومراجعة الأقسام مرة أخرى';
+  else if(pct>=70 && pct<=94) msg='جيد، ونتيجتك قابلة للتحسن بالمراجعة';
+  else msg='بداية مناسبة، راجعي التغذية الراجعة ثم أعيدي المحاولة';
+  document.getElementById('main').innerHTML=`
+  <div class="result">
+    <h2>شاشة النتيجة النهائية</h2>
+    <div class="score">${pct}%</div>
+    <p>عدد الإجابات الصحيحة: <b>${correct}</b></p>
+    <p>عدد الإجابات الخاطئة: <b>${wrong}</b></p>
+    <p>غير مجابة: <b>${unanswered}</b></p>
+    <div class="message">${msg}</div>
+    <div class="actions" style="justify-content:center">
+      <button class="primary" onclick="restart()">إعادة الاختبار</button>
+    </div>
+  </div>`;
+  updateStats();
+}
+function restart(){
+  answers=Array(questions.length).fill(null); currentSection='الكل'; currentIndex=0;
+  renderSections(); renderQuestion();
+}
+renderSections(); renderQuestion();
+</script>
+</body>
+</html>
